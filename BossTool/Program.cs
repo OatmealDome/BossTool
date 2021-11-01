@@ -10,6 +10,12 @@ namespace BossTool
 {
     class Program
     {
+        private static byte[] _bossKeyHash = new byte[]
+            { 0x52, 0x02, 0xCE, 0x50, 0x99, 0x23, 0x2C, 0x3D, 0x36, 0x5E, 0x28, 0x37, 0x97, 0x90, 0xA9, 0x19 };
+
+        private static byte[] _hmacKeyHash = new byte[]
+            { 0xB4, 0x48, 0x2F, 0xEF, 0x17, 0x7B, 0x01, 0x00, 0x09, 0x0C, 0xE0, 0xDB, 0xEB, 0x8C, 0xE9, 0x77 };
+
         static async Task Main(string[] args)
         {
             Command command = new RootCommand()
@@ -62,6 +68,23 @@ namespace BossTool
             {
                 Console.WriteLine($"No keys specified. Pass --boss-key with the BOSS encryption key.");
                 return;
+            }
+
+            using MD5 md5 = MD5.Create();
+
+            if (bossKey.Length != 16 || !md5.ComputeHash(bossKey).SequenceEqual(_bossKeyHash))
+            {
+                Console.WriteLine("BOSS key is incorrect.");
+                return;
+            }
+
+            if (hmacKey != null)
+            {
+                if (hmacKey.Length != 64 || !md5.ComputeHash(hmacKey).SequenceEqual(_hmacKeyHash))
+                {
+                    Console.WriteLine("BOSS HMAC key is incorrect.");
+                    return;
+                }
             }
         }
     }
