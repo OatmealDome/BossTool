@@ -86,6 +86,12 @@ namespace BossTool
                     return;
                 }
             }
+
+            if (!info.Exists)
+            {
+                Console.WriteLine("The specified file does not exist.");
+                return;
+            }
         }
     }
 }
