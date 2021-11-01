@@ -7,6 +7,9 @@
 
     <ItemGroup>
       <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
+      <Reference Include="Syroot.BinaryData">
+        <HintPath>..\Libraries\Syroot.BinaryData.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
