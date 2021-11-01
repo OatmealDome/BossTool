@@ -29,6 +29,40 @@ namespace BossTool
 
         private static void Run(string bossKeyString, string hmacKeyString, FileInfo info)
         {
+            byte[] bossKey = null;
+            byte[] hmacKey = null;
+
+            if (bossKeyString != null)
+            {
+                try
+                {
+                    bossKey = ByteUtil.ByteArrayFromString(bossKeyString);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Malformed BOSS key.");
+                    return;
+                }
+            }
+
+            if (hmacKeyString != null)
+            {
+                try
+                {
+                    hmacKey = ByteUtil.ByteArrayFromString(hmacKeyString);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Malformed BOSS HMAC key.");
+                    return;
+                }
+            }
+
+            if (bossKey == null)
+            {
+                Console.WriteLine($"No keys specified. Pass --boss-key with the BOSS encryption key.");
+                return;
+            }
         }
     }
 }
