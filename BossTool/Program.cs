@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
@@ -78,7 +78,7 @@ namespace BossTool
                 return;
             }
 
-            if (hmacKey != null)
+            if (hmacKey != null && hmacKey.Length != 0)
             {
                 if (hmacKey.Length != 64 || !md5.ComputeHash(hmacKey).SequenceEqual(_hmacKeyHash))
                 {
