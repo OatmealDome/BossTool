@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.IO;
@@ -100,6 +100,14 @@ namespace BossTool
                 Console.WriteLine("The specified output file already exists.");
                 return;
             }
+
+            using FileStream stream = new FileStream(info.FullName, FileMode.Open);
+            BossContainer bossContainer = new BossContainer(stream, bossKey, hmacKey);
+
+            using FileStream outStream = new FileStream(outInfo.FullName, FileMode.CreateNew);
+            outStream.Write(bossContainer.Data, 0, bossContainer.Data.Length);
+ 
+            Console.WriteLine("Done.");
         }
     }
 }
