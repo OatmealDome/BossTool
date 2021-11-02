@@ -22,18 +22,20 @@ namespace BossTool
             {
                 new Option<string>("--boss-key", () => null, "The BOSS encryption key."),
                 new Option<string>("--boss-hmac-key", () => null, "The BOSS HMAC key."),
-                new Argument<FileInfo>("file", "The file to decrypt.")
+                new Argument<FileInfo>("input", "The file to decrypt."),
+                new Argument<FileInfo>("output", "Where to save the decrypted file to.")
             };
 
-            command.Handler = CommandHandler.Create((string bossKey, string bossHmacKey, FileInfo file) =>
-            {
-                Run(bossKey, bossHmacKey, file);
-            });
+            command.Handler = CommandHandler.Create(
+                (string bossKey, string bossHmacKey, FileInfo input, FileInfo output) =>
+                {
+                    Run(bossKey, bossHmacKey, input, output);
+                });
 
             await command.InvokeAsync(args);
         }
 
-        private static void Run(string bossKeyString, string hmacKeyString, FileInfo info)
+        private static void Run(string bossKeyString, string hmacKeyString, FileInfo info, FileInfo outInfo)
         {
             byte[] bossKey = null;
             byte[] hmacKey = null;
@@ -90,6 +92,12 @@ namespace BossTool
             if (!info.Exists)
             {
                 Console.WriteLine("The specified file does not exist.");
+                return;
+            }
+
+            if (outInfo.Exists)
+            {
+                Console.WriteLine("The specified output file already exists.");
                 return;
             }
         }
